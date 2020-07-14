@@ -2114,11 +2114,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\SSD Optimization\\Documents\\Visual Studio 2017\\Projects\\OpenUtil\\OpenUtil\\OpenUtil.csproj",
+      "projectUniqueName": "P:\\Github\\OpenUtil\\OpenUtil\\OpenUtil.csproj",
       "projectName": "OpenUtil",
-      "projectPath": "e:\\SSD Optimization\\Documents\\Visual Studio 2017\\Projects\\OpenUtil\\OpenUtil\\OpenUtil.csproj",
+      "projectPath": "P:\\Github\\OpenUtil\\OpenUtil\\OpenUtil.csproj",
       "packagesPath": "C:\\Users\\Astro-Gaming-XTREME\\.nuget\\packages\\",
-      "outputPath": "e:\\SSD Optimization\\Documents\\Visual Studio 2017\\Projects\\OpenUtil\\OpenUtil\\obj\\",
+      "outputPath": "P:\\Github\\OpenUtil\\OpenUtil\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
