@@ -1,0 +1,9 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Astro-Gaming-XTREME\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Astro-Gaming-XTREME\\.nuget\\packages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ]
+  }
+}
