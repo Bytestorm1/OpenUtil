@@ -1,0 +1,2 @@
+﻿The DB contains the following collections, each of which have their own class with their respective wrapper clases in them.
+ - guildData: per-server data. This is where info for things like autorole, role commands, and server settings

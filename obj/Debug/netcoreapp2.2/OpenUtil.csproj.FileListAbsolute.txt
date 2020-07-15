@@ -6,3 +6,11 @@ e:\SSD Optimization\Documents\Visual Studio 2017\Projects\OpenUtil\OpenUtil\obj\
 e:\SSD Optimization\Documents\Visual Studio 2017\Projects\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.csproj.CoreCompileInputs.cache
 e:\SSD Optimization\Documents\Visual Studio 2017\Projects\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfoInputs.cache
 e:\SSD Optimization\Documents\Visual Studio 2017\Projects\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfo.cs
+P:\Github\OpenUtil\OpenUtil\bin\Debug\netcoreapp2.2\OpenUtil.deps.json
+P:\Github\OpenUtil\OpenUtil\bin\Debug\netcoreapp2.2\OpenUtil.runtimeconfig.json
+P:\Github\OpenUtil\OpenUtil\bin\Debug\netcoreapp2.2\OpenUtil.runtimeconfig.dev.json
+P:\Github\OpenUtil\OpenUtil\bin\Debug\netcoreapp2.2\OpenUtil.dll
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.csprojAssemblyReference.cache
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.csproj.CoreCompileInputs.cache
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfoInputs.cache
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfo.cs

@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 using System;
 using System.IO;
 using System.Reflection;
@@ -8,14 +10,10 @@ using System.Threading.Tasks;
 
 namespace OpenUtil
 {
-    class Program
+    class Backbone
     {
-        #region Secret-DoNotEnter
-        //Secret Stuff do not enter
-        static string token_clientID = "660888693162377217";
-        static string token_secret = "-zqT5xG3koMwOmRP_TGhzBQi8PPKyUUW";
-        static string token_bot = "NjYwODg4NjkzMTYyMzc3MjE3.XgjbIw.pHsp7FM7gQ92HFApMUX4-HF2MRw";
-        #endregion
+        public static MongoClient mClient = new MongoClient();
+        public static IMongoDatabase DB = mClient.GetDatabase("OpenUtil");      
 
         static private DiscordSocketClient client;
         static private CommandService Commands;
@@ -24,7 +22,7 @@ namespace OpenUtil
         static void Main(string[] args)
         {
             Console.WriteLine("Starting...");
-            new Program().MainAsync().GetAwaiter().GetResult();
+            new Backbone().MainAsync().GetAwaiter().GetResult();
 
         }
 
@@ -40,18 +38,20 @@ namespace OpenUtil
                 LogLevel = LogSeverity.Debug //Set to Error or Critical at Release
             });
             Console.WriteLine("Logging In...");
-            await client.LoginAsync(TokenType.Bot, token_bot);
+            await client.LoginAsync(TokenType.Bot, Tokens.token_bot);
             await client.StartAsync();
             Console.WriteLine("Logged In");
 
+            //mClient = new MongoClient();
+            //DB = mClient.GetDatabase("OpenUtil");
+
             //This handles incoming messages and commands
             await commandHandler.InstallCommandsAsync();
-            Console.WriteLine("Modules installed");
 
             //Status message; keep this set to the repo link
-            await client.SetGameAsync("repo doesn't exist yet");
+            await client.SetGameAsync("https://github.com/Bytestorm1/OpenUtil");
 
-            client.Ready += ClientReady;
+            client.Ready += ClientReady;            
 
             //Put stuff here
 
@@ -81,7 +81,6 @@ namespace OpenUtil
             }
             return Task.CompletedTask;
             #endregion
-
         }
 
         //Called from command handler
