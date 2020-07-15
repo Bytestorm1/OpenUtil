@@ -39,5 +39,10 @@ namespace OpenUtil.Mongo
             return false;
         }
         #endregion
+        #region ManualMod
+        public bool manualModEnabled = true;
+        public ulong mutedRole;
+        public Dictionary<ulong, int> warnings = new Dictionary<ulong, int>();
+        #endregion
     }
 }

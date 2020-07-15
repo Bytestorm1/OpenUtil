@@ -16,8 +16,7 @@ namespace OpenUtil.Modules
         [Command("role")]
         [Summary("Assign a role to the user or list the current roles applicable")]
         public Task roleAssign(string role = null) {
-            IMongoCollection<guildData> guildData = Backbone.DB.GetCollection<guildData>("guildData");
-            IFindFluent<guildData, guildData> find = guildData.Find(c => c.id == Context.Guild.Id);
+            IFindFluent<guildData, guildData> find = MongoUtil.findGuildData(Context.Guild.Id);
             if (role == null && find.CountDocuments() > 0)
             {
                 string output = "```";
@@ -43,5 +42,6 @@ namespace OpenUtil.Modules
             }
             return Task.CompletedTask;
         }
+
     }
 }
