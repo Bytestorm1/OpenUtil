@@ -14,7 +14,8 @@ namespace OpenUtil
     class Backbone
     {
         public static MongoClient mClient = new MongoClient();
-        public static IMongoDatabase DB = mClient.GetDatabase("OpenUtil");      
+        public static IMongoDatabase DB = mClient.GetDatabase("OpenUtil");
+        public static string CMD_PREFIX = "u-";
 
         static private DiscordSocketClient client;
         static private CommandService Commands;
