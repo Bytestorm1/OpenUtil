@@ -33,8 +33,16 @@ namespace OpenUtil.Modules
                 if (!find.First().roleCmds.TryGetValue(role, out r)) {
                     Context.Channel.SendMessageAsync("Role not found.");
                     return Task.CompletedTask;
-                }                
-                s.AddRoleAsync(r);
+                }
+                if (s.Roles.Contains(r))
+                {
+                    s.RemoveRoleAsync(r);
+                    Context.Channel.SendMessageAsync("Role removed.");
+                }
+                else {
+                    s.AddRoleAsync(r);
+                    Context.Channel.SendMessageAsync("Role added.");
+                }
             }
             else
             {
@@ -42,6 +50,23 @@ namespace OpenUtil.Modules
             }
             return Task.CompletedTask;
         }
-
+        [Command("addrole")]
+        [Summary("Add a role command")]
+        public Task addRoleCmd(string cmd, ulong roleId) {
+            guildData find = MongoUtil.getGuildData(Context.Guild.Id);
+            if (find.roleCmds.ContainsKey(cmd))
+            {
+                Context.Channel.SendMessageAsync("There is already a role command attatched to that. Please try a different one.");
+            }
+            else { //Allow multiple commands to point to one role
+                IRole r = Context.Guild.GetRole(roleId);
+                if (r == null) {
+                    Context.Channel.SendMessageAsync("Role not found!");
+                    return Task.CompletedTask;
+                }
+                find.roleCmds.Add(cmd, r);
+            }
+            return Task.CompletedTask;
+        }
     }
 }
