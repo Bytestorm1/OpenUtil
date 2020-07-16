@@ -52,6 +52,18 @@ namespace OpenUtil.Modules
         [Alias(new string[] { "warns", "infractions" })]
         [Summary("Get the amount of times a user has been warned")]
         public Task userWarns(SocketUser user) {
+            SocketGuildUser mod = Context.User as SocketGuildUser;
+            if (mod == null)
+            {
+                //DM Channel
+                Context.Channel.SendMessageAsync("This command can only be used in servers.");
+                return Task.CompletedTask;
+            }
+            if (!mod.GuildPermissions.ManageMessages)
+            {
+                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
+                return Task.CompletedTask;
+            }
             guildData data;
             try
             {
@@ -80,6 +92,18 @@ namespace OpenUtil.Modules
         [Command("mute")]
         [Summary("Stop a user from talking")]
         public Task muteUser(SocketUser user) {
+            SocketGuildUser mod = Context.User as SocketGuildUser;
+            if (mod == null)
+            {
+                //DM Channel
+                Context.Channel.SendMessageAsync("This command can only be used in servers.");
+                return Task.CompletedTask;
+            }
+            if (!mod.GuildPermissions.ManageMessages)
+            {
+                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
+                return Task.CompletedTask;
+            }
             guildData data;
             try
             {
@@ -107,6 +131,18 @@ namespace OpenUtil.Modules
         [Summary("Allow a user to talk again")]
         public Task unmuteUser(SocketUser user)
         {
+            SocketGuildUser mod = Context.User as SocketGuildUser;
+            if (mod == null)
+            {
+                //DM Channel
+                Context.Channel.SendMessageAsync("This command can only be used in servers.");
+                return Task.CompletedTask;
+            }
+            if (!mod.GuildPermissions.ManageMessages)
+            {
+                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
+                return Task.CompletedTask;
+            }
             guildData data;
             try
             {
