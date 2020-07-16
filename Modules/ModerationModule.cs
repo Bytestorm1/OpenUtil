@@ -94,7 +94,7 @@ namespace OpenUtil.Modules
             return Task.CompletedTask;
         }
         [Command("unmute")]
-        [Summary("Stop a user from talking")]
+        [Summary("Allow a user to talk again")]
         public Task unmuteUser(SocketUser user)
         {
             guildData data;
