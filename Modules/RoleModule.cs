@@ -53,6 +53,18 @@ namespace OpenUtil.Modules
         [Command("addrole")]
         [Summary("Add a role command")]
         public Task addRoleCmd(string cmd, ulong roleId) {
+            SocketGuildUser mod = Context.User as SocketGuildUser;
+            if (mod == null)
+            {
+                //DM Channel
+                Context.Channel.SendMessageAsync("This command can only be used in servers.");
+                return Task.CompletedTask;
+            }
+            if (!mod.GuildPermissions.ManageRoles)
+            {
+                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
+                return Task.CompletedTask;
+            }
             guildData find = MongoUtil.getGuildData(Context.Guild.Id);
             if (find.roleCmds.ContainsKey(cmd))
             {
