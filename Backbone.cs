@@ -3,6 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using OpenUtil.Mongo;
 using System;
 using System.IO;
 using System.Reflection;
@@ -65,19 +66,16 @@ namespace OpenUtil
         private Task UserJoined(SocketGuildUser user)
         {
             #region Autorole
-            string targetPath = currentPath + $@"/autorole/{user.Guild.Id}.txt";
-            //Look for role ID in /autorole/{guild id}.txt
-            if (File.Exists(targetPath)) {
-                string idString = File.ReadAllLines(targetPath)[0];
-                ulong id;
-                if (idString == null || idString == "" || !ulong.TryParse(idString, out id))
-                {
-                    //No autorole assigned
-                    return Task.CompletedTask;
-                }
-                else {
-                    user.AddRoleAsync(user.Guild.GetRole(id));
-                }
+            guildData d;
+            try
+            {
+                d = MongoUtil.getGuildData(user.Guild.Id);
+            }
+            catch {
+                return Task.CompletedTask;
+            }
+            if (d.autoRoleEnabled) {
+                user.AddRoleAsync(d.autoRole);
             }
             return Task.CompletedTask;
             #endregion
