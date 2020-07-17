@@ -10,6 +10,7 @@ namespace OpenUtil.Mongo
     {
         //Server id so it can be found
         public ulong id;
+        public string prefix = "u-";
         public void registerClassMap() {
             BsonClassMap m = BsonClassMap.RegisterClassMap<guildData>(cm => {
                 cm.AutoMap();
@@ -38,12 +39,21 @@ namespace OpenUtil.Mongo
             
             return false;
         }
+        public bool illegalMsg(string msg) {
+            foreach (string s in msg.Split(' ')) {
+                if (illegalWord(s)) {
+                    return true;
+                }
+            }
+            return false;
+        }
         #endregion
         #region ManualMod
         public bool manualModEnabled = true;
         public ulong mutedRole;
         public Dictionary<ulong, int> warnings = new Dictionary<ulong, int>();
         #endregion
+        
         //TODO: Live Feeds
     }
 }

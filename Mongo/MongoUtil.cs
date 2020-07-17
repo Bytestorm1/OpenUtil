@@ -22,5 +22,9 @@ namespace OpenUtil.Mongo
                 return find.First();
             }
         }
+        public static void addGuildData(guildData d) {
+            IMongoCollection<guildData> guildData = Backbone.DB.GetCollection<guildData>("guildData");
+            guildData.InsertOne(d);
+        }
     }
 }

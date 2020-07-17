@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using OpenUtil.Mongo;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -44,17 +45,40 @@ namespace OpenUtil
             var message = messageParam as SocketUserMessage;
             if (message == null) return;
 
+            // Create a WebSocket-based command context based on the message
+            var context = new SocketCommandContext(_client, message);
+            guildData d = null;
+            try
+            {
+                MongoUtil.getGuildData(context.Guild.Id);
+            }
+            catch {
+                //Move on
+            }
+
             // Create a number to track where the prefix ends and the command begins
-            int argPos = Backbone.CMD_PREFIX.Length;
+            int argPos = Backbone.DEFAULT_PREFIX.Length;
+            string p = Backbone.DEFAULT_PREFIX;
+            if (d != null) {
+                //Automod
+                if (d.automodEnabled && 
+                    !d.ignoredChannelIds.Contains(context.Channel.Id) && 
+                    d.illegalMsg(message.Content)) {
+                    await message.DeleteAsync();
+                    return;
+                }
+                //Command
+                argPos = d.prefix.Length;
+                p = d.prefix;
+            }
 
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
-            if (!(message.HasStringPrefix(Backbone.CMD_PREFIX, ref argPos) ||
+            if (!(message.HasStringPrefix(p, ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;
 
-            // Create a WebSocket-based command context based on the message
-            var context = new SocketCommandContext(_client, message);
+            
 
             // Execute the command with the command context we just
             // created, along with the service provider for precondition checks.
@@ -70,8 +94,10 @@ namespace OpenUtil
             // to be executed; however, this may not always be desired,
             // as it may clog up the request queue should a user spam a
             // command.
-            // if (!result.IsSuccess)
-            // await context.Channel.SendMessageAsync(result.ErrorReason);            
+            if (!result.IsSuccess)
+            {
+                await context.Channel.SendMessageAsync($@"An error ocurred: {result.ErrorReason}\nPlease report this at `https://github.com/Bytestorm1/OpenUtil/issues` with screenshots if possible.");
+            }
         }
     }
 }
