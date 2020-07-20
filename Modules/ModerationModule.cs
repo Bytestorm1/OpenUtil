@@ -15,16 +15,8 @@ namespace OpenUtil.Modules
         [Summary("Add a warning to a user and show the amount of warnings")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         public Task warnUser(SocketUser user) {
-            guildData data;
-            try
-            {
-                data = MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Guild data not found, please make sure that an admin goes through the initial setup.");
-                return Task.CompletedTask;
-            }
+            guildData data = MongoUtil.getGuildData(Context.Guild.Id);
+
             if (!data.manualModEnabled) {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
                 return Task.CompletedTask;
@@ -43,17 +35,8 @@ namespace OpenUtil.Modules
         [Alias(new string[] { "warns", "infractions" })]
         [Summary("Get the amount of times a user has been warned")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
-        public Task userWarns(SocketUser user) {          
-            guildData data;
-            try
-            {
-                data = MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Guild data not found, please make sure that an admin goes through the initial setup.");
-                return Task.CompletedTask;
-            }
+        public Task userWarns(SocketUser user) {
+            guildData data = MongoUtil.getGuildData(Context.Guild.Id);
             if (!data.manualModEnabled)
             {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
@@ -72,17 +55,8 @@ namespace OpenUtil.Modules
         [Command("mute")]
         [Summary("Stop a user from talking")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
-        public Task muteUser(SocketUser user) {            
-            guildData data;
-            try
-            {
-                data = MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Guild data not found, please make sure that an admin goes through the initial setup.");
-                return Task.CompletedTask;
-            }
+        public Task muteUser(SocketUser user) {
+            guildData data = MongoUtil.getGuildData(Context.Guild.Id);
             if (!data.manualModEnabled)
             {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
@@ -100,17 +74,8 @@ namespace OpenUtil.Modules
         [Summary("Allow a user to talk again")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         public Task unmuteUser(SocketUser user)
-        {            
-            guildData data;
-            try
-            {
-                data = MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Guild data not found, please make sure that an admin goes through the initial setup.");
-                return Task.CompletedTask;
-            }
+        {
+            guildData data = MongoUtil.getGuildData(Context.Guild.Id);
             if (!data.manualModEnabled)
             {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");

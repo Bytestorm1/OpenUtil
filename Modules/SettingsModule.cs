@@ -12,15 +12,8 @@ namespace OpenUtil.Modules
         [Command("setprefix")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         public Task setCmdPrefix(string p) {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch {
-                d.id = Context.Guild.Id;
-                MongoUtil.addGuildData(d);
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+
             d.prefix = p;
             MongoUtil.updateGuildData(d);
             Context.Guild.CurrentUser.ModifyAsync(c => c.Nickname = $"OpenUtil ({p})");
@@ -36,16 +29,8 @@ namespace OpenUtil.Modules
         [RequireUserPermission(Discord.GuildPermission.ManageRoles)]
         public Task setAutorole([Summary("Id of the role to automatically assign. If left blank it will disable autorole")]ulong roleId = 0, 
             [Summary("Whether the bot should make sure all users have the role, or only give it once")]bool maintain = false) {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                d.id = Context.Guild.Id;
-                MongoUtil.addGuildData(d);
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+
             if (roleId == 0) {
                 d.autoRole = null;
                 Context.Channel.SendMessageAsync("Autorole disabled");
@@ -59,16 +44,8 @@ namespace OpenUtil.Modules
         }
         [Command("autorole")]
         public Task getAutorole() {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                d.id = Context.Guild.Id;
-                MongoUtil.addGuildData(d);
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+
             if (d.autoRole != null)
             {
                 Context.Channel.SendMessageAsync($"Autorole is currently set to: **{d.autoRole.Name}**");
@@ -83,16 +60,8 @@ namespace OpenUtil.Modules
 
         [Command("set-automod")]
         public Task setAutomod(bool enable) {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                d.id = Context.Guild.Id;
-                MongoUtil.addGuildData(d);
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+
             d.automodEnabled = enable;
             MongoUtil.updateGuildData(d);
             if (enable) {
@@ -108,16 +77,8 @@ namespace OpenUtil.Modules
         }
         [Command("blacklist-add")]
         public Task blacklistAdd(params string[] words) {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Please enable automod to use this feature.");
-                return Task.CompletedTask;
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+
             d.blacklistedWords.AddRange(words);
             MongoUtil.updateGuildData(d);
             return Task.CompletedTask;
@@ -125,16 +86,7 @@ namespace OpenUtil.Modules
         [Command("blacklist-remove")]
         public Task blacklistRemove(params string[] words)
         {
-            guildData d = new guildData();
-            try
-            {
-                MongoUtil.getGuildData(Context.Guild.Id);
-            }
-            catch
-            {
-                Context.Channel.SendMessageAsync("Please enable automod to use this feature.");
-                return Task.CompletedTask;
-            }
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
             foreach (string word in words) {
                 d.blacklistedWords.Remove(word);
             }
