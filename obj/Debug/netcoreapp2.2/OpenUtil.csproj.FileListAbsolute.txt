@@ -14,3 +14,6 @@ P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.csprojAssemblyRefer
 P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.csproj.CoreCompileInputs.cache
 P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfoInputs.cache
 P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.AssemblyInfo.cs
+P:\Github\OpenUtil\OpenUtil\bin\Debug\netcoreapp2.2\OpenUtil.pdb
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.dll
+P:\Github\OpenUtil\OpenUtil\obj\Debug\netcoreapp2.2\OpenUtil.pdb

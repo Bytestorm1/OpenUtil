@@ -18,7 +18,7 @@ namespace OpenUtil.Mongo
             });
         }
         #region Autorole
-        public bool autoRoleEnabled = false;
+        //Leave null to disable
         public IRole autoRole;
         //whether or not the bot should ensure that all users have this role
         public bool maintainRole = false;

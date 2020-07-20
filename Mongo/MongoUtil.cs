@@ -26,5 +26,9 @@ namespace OpenUtil.Mongo
             IMongoCollection<guildData> guildData = Backbone.DB.GetCollection<guildData>("guildData");
             guildData.InsertOne(d);
         }
+        public static void updateGuildData(guildData newData) {
+            IMongoCollection<guildData> guildData = Backbone.DB.GetCollection<guildData>("guildData");
+            guildData.FindOneAndReplace(c => c.id == newData.id, newData);
+        }
     }
 }

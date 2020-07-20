@@ -51,7 +51,7 @@ namespace OpenUtil
             await commandHandler.InstallCommandsAsync();
 
             //Status message; keep this set to the repo link
-            await client.SetGameAsync("https://github.com/Bytestorm1/OpenUtil");
+            await client.SetGameAsync("github.com/Bytestorm1/OpenUtil");
 
             client.Ready += ClientReady;            
 
@@ -75,7 +75,7 @@ namespace OpenUtil
             catch {
                 return Task.CompletedTask;
             }
-            if (d.autoRoleEnabled) {
+            if (d.autoRole != null) {
                 user.AddRoleAsync(d.autoRole);
             }
             return Task.CompletedTask;
