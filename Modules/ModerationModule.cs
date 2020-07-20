@@ -13,17 +13,8 @@ namespace OpenUtil.Modules
         [Command("warn")]
         [Alias(new string[] { "infraction" })]
         [Summary("Add a warning to a user and show the amount of warnings")]
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         public Task warnUser(SocketUser user) {
-            SocketGuildUser mod = Context.User as SocketGuildUser;
-            if (mod == null) {
-                //DM Channel
-                Context.Channel.SendMessageAsync("This command can only be used in servers.");
-                return Task.CompletedTask;
-            }
-            if (!mod.GuildPermissions.ManageMessages) {
-                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
-                return Task.CompletedTask;
-            }
             guildData data;
             try
             {
@@ -51,19 +42,8 @@ namespace OpenUtil.Modules
         [Command("warnings")]
         [Alias(new string[] { "warns", "infractions" })]
         [Summary("Get the amount of times a user has been warned")]
-        public Task userWarns(SocketUser user) {
-            SocketGuildUser mod = Context.User as SocketGuildUser;
-            if (mod == null)
-            {
-                //DM Channel
-                Context.Channel.SendMessageAsync("This command can only be used in servers.");
-                return Task.CompletedTask;
-            }
-            if (!mod.GuildPermissions.ManageMessages)
-            {
-                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
-                return Task.CompletedTask;
-            }
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        public Task userWarns(SocketUser user) {          
             guildData data;
             try
             {
@@ -91,19 +71,8 @@ namespace OpenUtil.Modules
         }
         [Command("mute")]
         [Summary("Stop a user from talking")]
-        public Task muteUser(SocketUser user) {
-            SocketGuildUser mod = Context.User as SocketGuildUser;
-            if (mod == null)
-            {
-                //DM Channel
-                Context.Channel.SendMessageAsync("This command can only be used in servers.");
-                return Task.CompletedTask;
-            }
-            if (!mod.GuildPermissions.ManageMessages)
-            {
-                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
-                return Task.CompletedTask;
-            }
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        public Task muteUser(SocketUser user) {            
             guildData data;
             try
             {
@@ -129,20 +98,9 @@ namespace OpenUtil.Modules
         }
         [Command("unmute")]
         [Summary("Allow a user to talk again")]
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         public Task unmuteUser(SocketUser user)
-        {
-            SocketGuildUser mod = Context.User as SocketGuildUser;
-            if (mod == null)
-            {
-                //DM Channel
-                Context.Channel.SendMessageAsync("This command can only be used in servers.");
-                return Task.CompletedTask;
-            }
-            if (!mod.GuildPermissions.ManageMessages)
-            {
-                Context.Channel.SendMessageAsync("Insufficient permission:\nMissing **Manage Messages** permission");
-                return Task.CompletedTask;
-            }
+        {            
             guildData data;
             try
             {
