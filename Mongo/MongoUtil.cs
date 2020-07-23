@@ -30,10 +30,9 @@ namespace OpenUtil.Mongo
             if (find.CountDocuments() < 1)
             {
                 if (create) {
-                    //Technically I should have the new object stored separately, but this way I save a bit of processing power
-                    //Everything counts
-                    addGuildData(new guildData());
-                    return new guildData();
+                    guildData output = new guildData(id);
+                    addGuildData(output);
+                    return output;
                 }
                 else
                 {

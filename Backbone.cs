@@ -16,6 +16,7 @@ namespace OpenUtil
         public static MongoClient mClient = new MongoClient();
         public static IMongoDatabase DB = mClient.GetDatabase("OpenUtil");
         public static string DEFAULT_PREFIX = "u-";
+        public static ulong PERMISSIONS_BIT = 342912064;
 
         static private DiscordSocketClient client;
         static private CommandService Commands;
@@ -49,6 +50,7 @@ namespace OpenUtil
 
             //This handles incoming messages and commands
             await commandHandler.InstallCommandsAsync();
+            client.MessageReceived += commandHandler.HandleCommandAsync;
 
             //Status message; keep this set to the repo link
             await client.SetGameAsync("github.com/Bytestorm1/OpenUtil");

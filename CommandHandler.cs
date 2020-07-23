@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using OpenUtil.Modules;
 using OpenUtil.Mongo;
 using System;
 using System.Collections.Generic;
@@ -35,11 +36,15 @@ namespace OpenUtil
             //
             // If you do not use Dependency Injection, pass null.
             // See Dependency Injection guide for more information.
+            await _commands.AddModuleAsync<HelpModule>(null);
+            await _commands.AddModuleAsync<ModerationModule>(null);
+            await _commands.AddModuleAsync<RoleModule>(null);
+            await _commands.AddModuleAsync<SettingsModule>(null);
             await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(),
                                             services: null);
         }
 
-        private async Task HandleCommandAsync(SocketMessage messageParam)
+        public async Task HandleCommandAsync(SocketMessage messageParam)
         {
             // Don't process the command if it was a system message
             var message = messageParam as SocketUserMessage;
@@ -47,10 +52,11 @@ namespace OpenUtil
 
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);
+
             guildData d = null;
             try
             {
-                MongoUtil.getGuildData(context.Guild.Id);
+                d = MongoUtil.getGuildData(context.Guild.Id);
             }
             catch {
                 //Move on
@@ -61,6 +67,11 @@ namespace OpenUtil
             string p = Backbone.DEFAULT_PREFIX;
             if (d != null) {
                 //Automod
+                /**
+                 * Check if Automod is enabled, 
+                 * the current channel is not meant to be ignored, 
+                 * and then if the message is blacklisted
+                 */
                 if (d.automodEnabled && 
                     !d.ignoredChannelIds.Contains(context.Channel.Id) && 
                     d.illegalMsg(message.Content)) {
@@ -77,7 +88,9 @@ namespace OpenUtil
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;
-
+            else {
+                Console.WriteLine($"Command Received: {message.Content}");
+            }
             
 
             // Execute the command with the command context we just
