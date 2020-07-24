@@ -28,6 +28,7 @@ namespace OpenUtil.Modules
             else {
                 data.warnings.Add(user.Id, 1);
             }
+            MongoUtil.updateGuildData(data);
             Context.Channel.SendMessageAsync($"Warned user {user.Username}#{user.Discriminator}.\nThey now have {data.warnings[user.Id]} warnings.");
             return Task.CompletedTask;
         }
@@ -52,6 +53,25 @@ namespace OpenUtil.Modules
             }            
             return Task.CompletedTask;
         }
+        [Command("clear-warnings")]
+        [Alias("cwarnings", "clear-warns", "clear-infractions", "cwarns", "cinfractions")]
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        public Task clearWarnings(SocketUser user) {
+            guildData data = MongoUtil.getGuildData(Context.Guild.Id);
+
+            if (!data.manualModEnabled)
+            {
+                Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
+                return Task.CompletedTask;
+            }
+            if (data.warnings.ContainsKey(user.Id))
+            {
+                data.warnings.Remove(user.Id);
+            }
+            MongoUtil.updateGuildData(data);
+            Context.Channel.SendMessageAsync($"Cleared user {user.Username}#{user.Discriminator} of all warnings/infractions.");
+            return Task.CompletedTask;
+        }
         [Command("mute")]
         [Summary("Stop a user from talking")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
@@ -60,6 +80,10 @@ namespace OpenUtil.Modules
             if (!data.manualModEnabled)
             {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
+                return Task.CompletedTask;
+            }
+            if (data.mutedRole == 0) {
+                Context.Channel.SendMessageAsync($"Muted role not set! Set it with {data.prefix}set-mutedrole");
                 return Task.CompletedTask;
             }
             SocketGuildUser sg = user as SocketGuildUser;
@@ -79,6 +103,11 @@ namespace OpenUtil.Modules
             if (!data.manualModEnabled)
             {
                 Context.Channel.SendMessageAsync("Please enable the moderation module to use this command.");
+                return Task.CompletedTask;
+            }
+            if (data.mutedRole == 0)
+            {
+                Context.Channel.SendMessageAsync($"Muted role not set! Set it with {data.prefix}set-mutedrole");
                 return Task.CompletedTask;
             }
             SocketGuildUser sg = user as SocketGuildUser;

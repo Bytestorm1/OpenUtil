@@ -1,5 +1,7 @@
 ﻿using Discord;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,11 @@ namespace OpenUtil.Mongo
 {
     class guildData : IMongoWrapper
     {
+        /**
+         * Note: Add this line above any dictionary objects to ensure mongo doesn't throw a fit.
+         * [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+         */
+
         //Server id so it can be found
         public guildData(ulong id) {
             this.id = id;
@@ -32,6 +39,7 @@ namespace OpenUtil.Mongo
         public bool maintainRole = false;
         #endregion
         #region Role commands
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<string, IRole> roleCmds = new Dictionary<string, IRole>();
         #endregion
         #region Automod
@@ -47,21 +55,10 @@ namespace OpenUtil.Mongo
             //Check for censored vowels
             //char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
             char[] censors = new char[] { '*', '-', '/', '#', '@', '!', '^', '~'};
-            //Check for general censored characters; check for up to depth characters censored
-            char[] wordChars = word.ToCharArray();
-            for (int i = 0; i < word.Length; i++) {
-                if (censors.Contains(wordChars[i])) {
-                    string c = word.Substring(0, i) + word.Substring(i + 1, word.Length);                    
-                    foreach (string b in blacklistedWords) {
-                        string rem = b.Substring(0, i) + b.Substring(i + 1, word.Length);
-                        if (c.Equals(b)) {
-                            return true;
-                        }
-                    }
-                }
-            }
+            //Check for general censored characters; check for up to depth characters censored        
+
             //TODO: Add detection for censoring characters to bypass blacklist
-            
+
             return false;
         }
         public bool illegalMsg(string msg) {
@@ -75,7 +72,8 @@ namespace OpenUtil.Mongo
         #endregion
         #region ManualMod
         public bool manualModEnabled = true;
-        public ulong mutedRole;
+        public ulong mutedRole = 0;
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<ulong, int> warnings = new Dictionary<ulong, int>();
         #endregion
         

@@ -15,23 +15,23 @@ namespace OpenUtil.Modules
     {
         [Command("role")]
         [Summary("Assign a role to the user or list the current roles applicable")]
-        [RequireUserPermission(GuildPermission.ManageRoles)]
         public Task roleAssign(string role = null) {
-            IFindFluent<guildData, guildData> find = MongoUtil.findGuildData(Context.Guild.Id);
-            if (role == null && find.CountDocuments() > 0)
+            guildData d = MongoUtil.getGuildData(Context.Guild.Id);
+            if (role == null)
             {
                 string output = "```";
-                foreach (string s in find.First().roleCmds.Keys.ToList())
+                foreach (string s in d.roleCmds.Keys.ToList())
                 {
                     output += s + "\n";
                 }
                 output += "```";
                 Context.Channel.SendMessageAsync("Here are the current role commands:\n" + output);
             }
-            else if (find.CountDocuments() > 0) {
+            else {
                 IRole r;
                 SocketGuildUser s = Context.User as SocketGuildUser;
-                if (!find.First().roleCmds.TryGetValue(role, out r)) {
+                if (!d.roleCmds.TryGetValue(role, out r))
+                {
                     Context.Channel.SendMessageAsync("Role not found.");
                     return Task.CompletedTask;
                 }
@@ -40,14 +40,11 @@ namespace OpenUtil.Modules
                     s.RemoveRoleAsync(r);
                     Context.Channel.SendMessageAsync("Role removed.");
                 }
-                else {
+                else
+                {
                     s.AddRoleAsync(r);
                     Context.Channel.SendMessageAsync("Role added.");
                 }
-            }
-            else
-            {
-                Context.Channel.SendMessageAsync("No role commands found!");
             }
             return Task.CompletedTask;
         }
@@ -68,6 +65,7 @@ namespace OpenUtil.Modules
                 }
                 find.roleCmds.Add(cmd, r);
             }
+            MongoUtil.updateGuildData(find);
             return Task.CompletedTask;
         }
     }

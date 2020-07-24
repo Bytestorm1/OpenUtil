@@ -53,31 +53,12 @@ namespace OpenUtil
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);
 
-            guildData d = null;
-            try
-            {
-                d = MongoUtil.getGuildData(context.Guild.Id);
-            }
-            catch {
-                //Move on
-            }
+            guildData d = MongoUtil.getGuildData(context.Guild.Id);
 
             // Create a number to track where the prefix ends and the command begins
             int argPos = Backbone.DEFAULT_PREFIX.Length;
             string p = Backbone.DEFAULT_PREFIX;
-            if (d != null) {
-                //Automod
-                /**
-                 * Check if Automod is enabled, 
-                 * the current channel is not meant to be ignored, 
-                 * and then if the message is blacklisted
-                 */
-                if (d.automodEnabled && 
-                    !d.ignoredChannelIds.Contains(context.Channel.Id) && 
-                    d.illegalMsg(message.Content)) {
-                    await message.DeleteAsync();
-                    return;
-                }
+            if (d != null) {                
                 //Command
                 argPos = d.prefix.Length;
                 p = d.prefix;
@@ -87,8 +68,25 @@ namespace OpenUtil
             if (!(message.HasStringPrefix(p, ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
+            {
+                //Automod
+                /**
+                 * Check if Automod is enabled, 
+                 * the current channel is not meant to be ignored, 
+                 * and then if the message is blacklisted
+                 */
+                if (d.automodEnabled &&
+                    !d.ignoredChannelIds.Contains(context.Channel.Id) &&
+                    d.illegalMsg(message.Content))
+                {
+                    await message.DeleteAsync();
+                    return;
+                }
+
                 return;
-            else {
+            }
+            else
+            {
                 Console.WriteLine($"Command Received: {message.Content}");
             }
             
@@ -109,7 +107,7 @@ namespace OpenUtil
             // command.
             if (!result.IsSuccess)
             {
-                await context.Channel.SendMessageAsync($@"An error ocurred: {result.ErrorReason}\nPlease report this at `https://github.com/Bytestorm1/OpenUtil/issues` with screenshots if possible.");
+                await context.Channel.SendMessageAsync($"An error ocurred: ```{result.ErrorReason}```\nPlease report this at" + @"`https://github.com/Bytestorm1/OpenUtil/issues`" + "with screenshots if possible.");
             }
         }
     }
