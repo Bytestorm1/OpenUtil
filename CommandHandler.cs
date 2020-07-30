@@ -40,6 +40,7 @@ namespace OpenUtil
             await _commands.AddModuleAsync<ModerationModule>(null);
             await _commands.AddModuleAsync<RoleModule>(null);
             await _commands.AddModuleAsync<SettingsModule>(null);
+            await _commands.AddModuleAsync<PollModule>(null);
             await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(),
                                             services: null);
         }

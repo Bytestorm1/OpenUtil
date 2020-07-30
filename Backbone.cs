@@ -61,27 +61,35 @@ namespace OpenUtil
 
             //client.[Event] += Event
             client.UserJoined += UserJoined;
+            client.UserLeft += UserLeft;
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
         }
 
+        private Task UserLeft(SocketGuildUser user)
+        {
+            #region Leave message
+            guildData d = MongoUtil.getGuildData(user.Guild.Id);
+            SocketGuild g = client.GetGuild(user.Guild.Id);
+            g.SystemChannel.SendMessageAsync(d.joinMsg);
+            #endregion
+            return Task.CompletedTask;
+        }
+
         private Task UserJoined(SocketGuildUser user)
         {
             #region Autorole
-            guildData d;
-            try
-            {
-                d = MongoUtil.getGuildData(user.Guild.Id);
-            }
-            catch {
-                return Task.CompletedTask;
-            }
+            guildData d = MongoUtil.getGuildData(user.Guild.Id);
             if (d.autoRole != null) {
                 user.AddRoleAsync(d.autoRole);
             }
-            return Task.CompletedTask;
             #endregion
+            #region Join message
+            SocketGuild g = client.GetGuild(user.Guild.Id);
+            g.SystemChannel.SendMessageAsync(d.joinMsg);
+            #endregion
+            return Task.CompletedTask;
         }
 
         //Called from command handler

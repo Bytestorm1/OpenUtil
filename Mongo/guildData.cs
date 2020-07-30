@@ -76,7 +76,10 @@ namespace OpenUtil.Mongo
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<ulong, int> warnings = new Dictionary<ulong, int>();
         #endregion
-        
+        #region Join/Leave message
+        public string joinMsg = "undefined";
+        public string leaveMsg = "undefined";
+        #endregion
         //TODO: Live Feeds
     }
 }
